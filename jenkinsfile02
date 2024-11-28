@@ -1,38 +1,32 @@
 pipeline {
-    agent 'Agent-1'
-}
-stages {
-    stage ('build') {
-        steps {
-            sh 'echo this is build team'
-        }
-    }
+    agent any
     stages {
-        stage ('test') {
+        stage('Build') {
             steps {
-                sh 'echo this test team'
+                sh 'echo This is the build stage'
             }
         }
-        stages {
-            stage ('this is deployment') {
-                steps{
-                    sh 'echo this deployment '
-
-                }
-            }
+        stage('Test') {
+            steps {
+                sh 'echo This is the test stage'
             }
         }
+        stage('Deploy') {
+            steps {
+                sh 'echo This is the deployment stage'
+            }
+        }
+    }
+    post {
+        always {
+            echo "This section runs always"
+            deleteDir()
+        }
+        success {
+            echo "This section runs when the pipeline succeeds"
+        }
+        failure {
+            echo "This section runs when the pipeline fails"
+        }
+    }
 }
-post {
-    always {
-        echo "this section run allways"
-        delteDir ()
-    }
-    sucess {
-        echo "this section run when pipe line sucess"
-    }
-    failure {
-        echo "this section run when pipe line failure"
-    }
-}
-
