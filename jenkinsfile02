@@ -1,0 +1,38 @@
+pipeline {
+    agent 'Agent-1'
+}
+stages {
+    stage ('build') {
+        steps {
+            sh 'echo this is build team'
+        }
+    }
+    stages {
+        stage ('test') {
+            steps {
+                sh 'echo this test team'
+            }
+        }
+        stages {
+            stage ('this is deployment') {
+                steps{
+                    sh 'echo this deployment '
+
+                }
+            }
+            }
+        }
+}
+post {
+    always {
+        echo "this section run allways"
+        delteDir ()
+    }
+    sucess {
+        echo "this section run when pipe line sucess"
+    }
+    failure {
+        echo "this section run when pipe line failure"
+    }
+}
+
