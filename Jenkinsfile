@@ -2,23 +2,15 @@ pipeline {
     agent {
         label 'AGENT-1'
     }
-
     options {
         timeout(time: 30, unit: 'MINUTES')
         disableConcurrentBuilds()
     }
-
     environment {
         DEBUG = 'true'
-        APP_VERSION = ''
-        backend = 'my-backend-image'
-        v2 = 'latest'
-        DOCKER_USERNAME = credentials('docker-username') // Assuming credentials are stored in Jenkins
-        DOCKER_PASSWORD = credentials('docker-password') // Assuming credentials are stored in Jenkins
     }
-
     stages {
-        stage('Read the version') {
+        stage('Read the Version') {
             steps {
                 script {
                     def packageJson = readJSON file: 'package.json'
@@ -27,8 +19,7 @@ pipeline {
                 }
             }
         }
-
-        stage('Install the Dependencies') {
+        stage('Install Dependencies') {
             steps {
                 script {
                     sh '''
@@ -40,30 +31,25 @@ pipeline {
                 }
             }
         }
-
         stage('Docker build and push') {
             steps {
                 script {
-                    // Build and tag the Docker image
-                    sh """
+                    sh '''
                         docker build -t ${backend}:${v2} .
                         docker images
-                    """
+                    '''
                 }
             }
-        }
+        }  
     }
-
     post {
         always {
             echo "Cleaning up workspace..."
             deleteDir() 
         }
-
         success {
             echo "Pipeline completed successfully!"
         }
-
         failure {
             echo "Pipeline failed."
         }
