@@ -10,7 +10,11 @@ pipeline {
 
     environment {
         DEBUG = 'true'
-        APP_VERSION = '' 
+        APP_VERSION = ''
+        backend = 'my-backend-image'
+        v2 = 'latest'
+        DOCKER_USERNAME = credentials('docker-username') // Assuming credentials are stored in Jenkins
+        DOCKER_PASSWORD = credentials('docker-password') // Assuming credentials are stored in Jenkins
     }
 
     stages {
@@ -40,10 +44,15 @@ pipeline {
         stage('Docker build and push') {
             steps {
                 script {
+                    // Build and tag the Docker image
                     sh """
                         docker build -t ${backend}:${v2} .
                         docker tag ${backend}:${v2} chethankumar6/backend:v2
                     """
+                    // Docker login (if required)
+                    sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                    
+                    // Push the image to Docker registry
                     sh 'docker push chethankumar6/backend:v2'
                 }
             }
