@@ -2,17 +2,21 @@ pipeline {
     agent {
         label 'AGENT-1'
     }
+    oprtions{
+        timeout(time: 30, unit: 'MINUTES')
+        disableConcurentbuilds()
+    }
+    envinorment {
+        DEBUG = 'true'
+        appVersion = ''
+        }
     stages {
-        stage('Build') {
+        stage('Read the version'){
             steps {
-                sh 'echo This is the build stage'
+                script
             }
         }
-        stage('Test') {
-            steps {
-                sh 'echo This is the test stage'
-            }
-        }
+        
         stage('Deploy') {
             steps {
                 sh 'echo This is the deployment stage'
