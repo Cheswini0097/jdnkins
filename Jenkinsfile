@@ -47,13 +47,8 @@ pipeline {
                     // Build and tag the Docker image
                     sh """
                         docker build -t ${backend}:${v2} .
-                        docker tag ${backend}:${v2} chethankumar6/backend:v2
+                        docker images
                     """
-                    // Docker login (if required)
-                    sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
-                    
-                    // Push the image to Docker registry
-                    sh 'docker push chethankumar6/backend:v2'
                 }
             }
         }
