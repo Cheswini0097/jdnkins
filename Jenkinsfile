@@ -26,6 +26,7 @@ pipeline {
                 sh '''
                 docker build -t backend:v2 .
                 docker images
+                echo "Building application..."
                 '''
             }
         }
