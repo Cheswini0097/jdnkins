@@ -24,10 +24,18 @@ pipeline {
         stage('Build the Docker image'){
             steps {
                 sh '''
-                docker build -t chethankumar6:v2 .
+                docker build -t backend:v2 .
                 docker images
                 '''
             }
+        }
+    }
+    stage('Docker push'){
+        steps {
+            sh '''
+            docker tag backend:v2 chethankumar6/backend:v2
+            docker push chethankumar6/backend:v2
+            '''
         }
     }
 }
